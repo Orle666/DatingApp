@@ -33,7 +33,13 @@ namespace API
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers();
-            services.AddCors(); // LEKCIJA CORS
+           // services.AddCors(); // LEKCIJA CORS ne valja
+            // proba iz komentara
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
+                    .AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +54,8 @@ namespace API
 
             app.UseRouting();
             
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));  // x je policy- LEKCIJA CORS mora se dodati poslije UseRouting a prije UseAuthorization i UseEndpoints
+            app.UseCors();
+          //  app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));  // x je policy- LEKCIJA CORS mora se dodati poslije UseRouting a prije UseAuthorization i UseEndpoints
 
             app.UseAuthorization();
 
